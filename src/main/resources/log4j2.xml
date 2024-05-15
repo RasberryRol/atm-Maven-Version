@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <!--        specify the name of the folder to be created-->
+        <Property name="filename">./logs</Property>
+    </Properties>
+    <Appenders>
+        <!--specify the reference name (file), the name of the first file,
+             and the name and time that the additional files are created-->
+        <RollingFile name="file"
+                     fileName="${filename}/logdemo.log"
+                     filePattern="${filename}/logdemo-%d{HH-mm-ss.SSS}.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <SizeBasedTriggeringPolicy size="1KB" />
+        </RollingFile>
+
+        <!--indicates where to log the messages-->
+        <!--the ref names in loggers must match this name-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--provides the format in which message are to be displayed-->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="org.example" level="trace" additivity="false">
+            <AppenderRef ref="Console"/> <!--must match name above-->
+            <AppenderRef ref="file"/>
+        </Logger>
+
+        <!--Root indicates the class where the code is running from-->
+        <Root level="trace" additivity="false"> <!--sets the log level and above-->
+            <AppenderRef ref="Console" /> <!--refer the logs back to where the messages are being displayed-->
+            <AppenderRef ref="file"/>
+        </Root>
+    </Loggers>
+</Configuration>
